@@ -1,0 +1,99 @@
+<svg class="ssf-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 530" role="img"
+     aria-label="Los dos repositorios repiten la misma forma: adaptadores fuera, puertos y casos de uso en medio, dominio dentro; y se tocan en un solo punto, el HTTP entre el cliente del portal y el adaptador REST."
+     font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif">
+  <title>El hexágono, dos veces</title>
+  <desc>Portal y servicio con las mismas tres capas y una raíz de composición cada uno.</desc>
+  <defs>
+    <marker id="d05-arrow" viewBox="0 0 9 7" refX="8" refY="3.5" markerWidth="8" markerHeight="7" orient="auto-start-reverse">
+      <path class="d-arrow" d="M0,0 L9,3.5 L0,7 z"/>
+    </marker>
+    <style>
+      /* The page owns the theme. Each token reads the page's variable first, so a page
+         served light while the system is dark still draws a light diagram; the literal
+         values only apply when this file is opened outside the page. */
+      .ssf-diagram {
+        font-family: var(--fuente, ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif);
+        --d-surface      : var(--superficie, #f4f6f9);
+        --d-panel        : var(--superficie-alta, #ffffff);
+        --d-sunken       : var(--superficie-hundida, #eef1f5);
+        --d-border       : var(--borde, #dde2e9);
+        --d-border-strong: var(--borde-fuerte, #c3cad4);
+        --d-text         : var(--texto, #1b2430);
+        --d-text-soft    : var(--texto-suave, #5b6672);
+        --d-accent       : var(--acento, #4338ca);
+        --d-accent-strong: var(--acento-fuerte, #3730a3);
+        --d-accent-soft  : var(--acento-tenue, #eef0fc);
+        --d-warn         : var(--aviso, #b45309);
+      }
+      @media (prefers-color-scheme: dark) {
+        .ssf-diagram {
+          --d-surface      : var(--superficie, #11151c);
+          --d-panel        : var(--superficie-alta, #191f28);
+          --d-sunken       : var(--superficie-hundida, #222a35);
+          --d-border       : var(--borde, #2c3542);
+          --d-border-strong: var(--borde-fuerte, #3d4757);
+          --d-text         : var(--texto, #e8ecf1);
+          --d-text-soft    : var(--texto-suave, #9aa5b4);
+          --d-accent       : var(--acento, #7c73ee);
+          --d-accent-strong: var(--acento-fuerte, #8f88f2);
+          --d-accent-soft  : var(--acento-tenue, #232544);
+          --d-warn         : var(--aviso, #f59e0b);
+        }
+      }
+      .ssf-diagram .d-card { fill: var(--d-panel); stroke: var(--d-border); }
+      .ssf-diagram .d-ring1 { fill: var(--d-surface); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-ring2 { fill: var(--d-sunken); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-note { fill: var(--d-surface); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-zone { stroke: var(--d-border-strong); }
+      .ssf-diagram .d-core { fill: var(--d-accent-soft); stroke: var(--d-accent); }
+      .ssf-diagram .d-title { fill: var(--d-text); }
+      .ssf-diagram .d-label { fill: var(--d-text); }
+      .ssf-diagram .d-sub { fill: var(--d-text-soft); }
+      .ssf-diagram .d-edge { stroke: var(--d-text-soft); }
+      .ssf-diagram .d-arrow { fill: var(--d-text-soft); }
+    </style>
+  </defs>
+
+  <rect class="d-card" x="0.5" y="0.5" width="999" height="529" rx="12"/>
+
+  <rect class="d-zone" x="24" y="40" width="428" height="430" rx="14" fill="none" stroke-dasharray="6 5"/>
+  <text class="d-title" x="238" y="66" text-anchor="middle" font-size="13" font-weight="600">simple-stock-flow-portal · Angular 20</text>
+  <rect class="d-ring1" x="38" y="82" width="400" height="286" rx="10"/>
+  <text class="d-title" x="238" y="104" text-anchor="middle" font-size="12" font-weight="600">presentation/ · infrastructure/</text>
+  <text class="d-sub" x="238" y="122" text-anchor="middle" font-size="10">pantallas y guardas · http/ · mappers/ · interceptors/</text>
+  <rect class="d-ring2" x="70" y="138" width="336" height="206" rx="10"/>
+  <text class="d-title" x="238" y="160" text-anchor="middle" font-size="12" font-weight="600">application/</text>
+  <text class="d-sub" x="238" y="178" text-anchor="middle" font-size="10">ports/ (4) · use-cases/ (9) · state/</text>
+  <rect class="d-core" x="106" y="194" width="264" height="126" rx="10"/>
+  <text class="d-title" x="238" y="224" text-anchor="middle" font-size="13" font-weight="600">domain/</text>
+  <text class="d-sub" x="238" y="248" text-anchor="middle" font-size="10">models · value-objects · policies</text>
+  <text class="d-sub" x="238" y="272" text-anchor="middle" font-size="10">sin una sola importación</text>
+  <text class="d-sub" x="238" y="288" text-anchor="middle" font-size="10">de Angular</text>
+  <rect class="d-note" x="70" y="396" width="336" height="58" rx="8"/>
+  <text class="d-title" x="238" y="418" text-anchor="middle" font-size="11.5" font-weight="600">infrastructure/providers.ts</text>
+  <text class="d-sub" x="238" y="437" text-anchor="middle" font-size="10">el único sitio donde un puerto encuentra su adaptador</text>
+
+  <rect class="d-zone" x="568" y="40" width="408" height="430" rx="14" fill="none" stroke-dasharray="6 5"/>
+  <text class="d-title" x="772" y="66" text-anchor="middle" font-size="13" font-weight="600">simple-stock-flow-api · .NET 8</text>
+  <rect class="d-ring1" x="582" y="82" width="380" height="286" rx="10"/>
+  <text class="d-title" x="772" y="104" text-anchor="middle" font-size="12" font-weight="600">adapters/</text>
+  <text class="d-sub" x="772" y="122" text-anchor="middle" font-size="10">inbound/api · outbound/persistence · security · storage</text>
+  <rect class="d-ring2" x="610" y="138" width="324" height="206" rx="10"/>
+  <text class="d-title" x="772" y="160" text-anchor="middle" font-size="12" font-weight="600">application/</text>
+  <text class="d-sub" x="772" y="178" text-anchor="middle" font-size="10">Ports/Inbound (6) · Ports/Outbound (10) · Services (5)</text>
+  <rect class="d-core" x="642" y="194" width="260" height="126" rx="10"/>
+  <text class="d-title" x="772" y="224" text-anchor="middle" font-size="13" font-weight="600">domain/</text>
+  <text class="d-sub" x="772" y="248" text-anchor="middle" font-size="10">Catalog · Sales · Identity · ValueObjects</text>
+  <text class="d-sub" x="772" y="272" text-anchor="middle" font-size="10">cero referencias salientes:</text>
+  <text class="d-sub" x="772" y="288" text-anchor="middle" font-size="10">ni ORM, ni HTTP, ni ficheros</text>
+  <rect class="d-note" x="610" y="396" width="324" height="58" rx="8"/>
+  <text class="d-title" x="772" y="418" text-anchor="middle" font-size="11.5" font-weight="600">bootstrap/Composition/PortBindings.cs</text>
+  <text class="d-sub" x="772" y="437" text-anchor="middle" font-size="10">un new de infraestructura fuera de aquí rompe el hexágono</text>
+
+  <line class="d-edge" x1="456" y1="250" x2="564" y2="250" stroke-width="1.5" marker-start="url(#d05-arrow)" marker-end="url(#d05-arrow)"/>
+  <text class="d-label" x="510" y="232" text-anchor="middle" font-size="10.5" font-weight="600">HTTP · JSON</text>
+  <text class="d-label" x="510" y="272" text-anchor="middle" font-size="10">api.dto.ts</text>
+  <text class="d-label" x="510" y="286" text-anchor="middle" font-size="10">↔ Ports/Inbound</text>
+
+  <text class="d-sub" x="500" y="502" text-anchor="middle" font-size="10.5">Se tocan en un punto y solo en uno: el cliente HTTP del portal contra el adaptador REST del servicio. Los dos dominios no se conocen.</text>
+</svg>

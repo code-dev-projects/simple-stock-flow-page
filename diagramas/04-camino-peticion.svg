@@ -1,0 +1,121 @@
+<svg class="ssf-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" role="img"
+     aria-label="Camino de una petición: el navegador pide a nginx, nginx hace de proxy al servicio, el servicio valida el token y consulta Postgres; y una segunda puerta, la de /media, viaja sin token."
+     font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif">
+  <title>El camino de una petición, de la pantalla al motor</title>
+  <desc>Secuencia entre navegador, portal (nginx), service (.NET) y db (Postgres), con la ruta anónima de /media aparte.</desc>
+  <defs>
+    <marker id="d04-arrow" viewBox="0 0 9 7" refX="8" refY="3.5" markerWidth="8" markerHeight="7" orient="auto-start-reverse">
+      <path class="d-arrow" d="M0,0 L9,3.5 L0,7 z"/>
+    </marker>
+    <marker id="d04-arrow-accent" viewBox="0 0 9 7" refX="8" refY="3.5" markerWidth="8" markerHeight="7" orient="auto-start-reverse">
+      <path class="d-arrow-accent" d="M0,0 L9,3.5 L0,7 z"/>
+    </marker>
+    <style>
+      /* The page owns the theme. Each token reads the page's variable first, so a page
+         served light while the system is dark still draws a light diagram; the literal
+         values only apply when this file is opened outside the page. */
+      .ssf-diagram {
+        font-family: var(--fuente, ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif);
+        --d-surface      : var(--superficie, #f4f6f9);
+        --d-panel        : var(--superficie-alta, #ffffff);
+        --d-sunken       : var(--superficie-hundida, #eef1f5);
+        --d-border       : var(--borde, #dde2e9);
+        --d-border-strong: var(--borde-fuerte, #c3cad4);
+        --d-text         : var(--texto, #1b2430);
+        --d-text-soft    : var(--texto-suave, #5b6672);
+        --d-accent       : var(--acento, #4338ca);
+        --d-accent-strong: var(--acento-fuerte, #3730a3);
+        --d-accent-soft  : var(--acento-tenue, #eef0fc);
+        --d-warn         : var(--aviso, #b45309);
+      }
+      @media (prefers-color-scheme: dark) {
+        .ssf-diagram {
+          --d-surface      : var(--superficie, #11151c);
+          --d-panel        : var(--superficie-alta, #191f28);
+          --d-sunken       : var(--superficie-hundida, #222a35);
+          --d-border       : var(--borde, #2c3542);
+          --d-border-strong: var(--borde-fuerte, #3d4757);
+          --d-text         : var(--texto, #e8ecf1);
+          --d-text-soft    : var(--texto-suave, #9aa5b4);
+          --d-accent       : var(--acento, #7c73ee);
+          --d-accent-strong: var(--acento-fuerte, #8f88f2);
+          --d-accent-soft  : var(--acento-tenue, #232544);
+          --d-warn         : var(--aviso, #f59e0b);
+        }
+      }
+      .ssf-diagram .d-card { fill: var(--d-panel); stroke: var(--d-border); }
+      .ssf-diagram .d-box { fill: var(--d-sunken); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-note { fill: var(--d-surface); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-focus { fill: var(--d-accent-soft); stroke: var(--d-accent); }
+      .ssf-diagram .d-title { fill: var(--d-text); }
+      .ssf-diagram .d-label { fill: var(--d-text); }
+      .ssf-diagram .d-sub { fill: var(--d-text-soft); }
+      .ssf-diagram .d-life { stroke: var(--d-border-strong); }
+      .ssf-diagram .d-sep { stroke: var(--d-border); }
+      .ssf-diagram .d-edge { stroke: var(--d-text-soft); }
+      .ssf-diagram .d-arrow { fill: var(--d-text-soft); }
+      .ssf-diagram .d-accent-line { stroke: var(--d-accent); }
+      .ssf-diagram .d-accent-text { fill: var(--d-accent-strong); }
+      .ssf-diagram .d-arrow-accent { fill: var(--d-accent); }
+    </style>
+  </defs>
+
+  <rect class="d-card" x="0.5" y="0.5" width="999" height="659" rx="12"/>
+
+  <rect class="d-box" x="25" y="24" width="170" height="44" rx="8"/>
+  <text class="d-title" x="110" y="52" text-anchor="middle" font-size="12.5" font-weight="600">Navegador · Angular</text>
+  <rect class="d-box" x="255" y="24" width="170" height="44" rx="8"/>
+  <text class="d-title" x="340" y="52" text-anchor="middle" font-size="12.5" font-weight="600">portal · nginx</text>
+  <rect class="d-focus" x="535" y="24" width="170" height="44" rx="8"/>
+  <text class="d-title" x="620" y="52" text-anchor="middle" font-size="12.5" font-weight="600">service · .NET 8</text>
+  <rect class="d-box" x="805" y="24" width="170" height="44" rx="8"/>
+  <text class="d-title" x="890" y="52" text-anchor="middle" font-size="12.5" font-weight="600">db · Postgres</text>
+
+  <line class="d-life" x1="110" y1="68" x2="110" y2="630" stroke-dasharray="4 5"/>
+  <line class="d-life" x1="340" y1="68" x2="340" y2="630" stroke-dasharray="4 5"/>
+  <line class="d-life" x1="620" y1="68" x2="620" y2="630" stroke-dasharray="4 5"/>
+  <line class="d-life" x1="890" y1="68" x2="890" y2="630" stroke-dasharray="4 5"/>
+
+  <line class="d-edge" x1="110" y1="120" x2="336" y2="120" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="223" y="102" text-anchor="middle" font-size="10">GET /api/products?page=1&amp;pageSize=20</text>
+  <text class="d-label" x="223" y="114" text-anchor="middle" font-size="10">Authorization: Bearer — lo pone el interceptor</text>
+
+  <line class="d-edge" x1="340" y1="182" x2="616" y2="182" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="478" y="164" text-anchor="middle" font-size="10">proxy_pass http://service:8080$request_uri</text>
+  <text class="d-label" x="478" y="176" text-anchor="middle" font-size="10">añade Host · X-Real-IP · X-Forwarded-For</text>
+
+  <path class="d-edge" d="M620,226 h44 a10,10 0 0 1 10,10 v14 a10,10 0 0 1 -10,10 h-44" fill="none" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="690" y="238" font-size="10">valida la firma del token y mira el rol:</text>
+  <text class="d-label" x="690" y="251" font-size="10">401 sin token · 403 si el rol no basta</text>
+
+  <line class="d-edge" x1="620" y1="302" x2="886" y2="302" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="753" y="284" text-anchor="middle" font-size="10">SELECT … ORDER BY … OFFSET/LIMIT</text>
+  <text class="d-label" x="753" y="296" text-anchor="middle" font-size="10">EF Core · Npgsql · TCP 5432</text>
+
+  <line class="d-edge" x1="890" y1="348" x2="624" y2="348" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="753" y="342" text-anchor="middle" font-size="10">filas, ya paginadas por el motor</text>
+
+  <rect class="d-note" x="700" y="390" width="276" height="56" rx="8"/>
+  <text class="d-sub" x="714" y="411" font-size="10">Si el dominio lanza, un único filtro traduce:</text>
+  <text class="d-sub" x="714" y="427" font-size="10">422 regla de negocio · 409 concurrencia</text>
+  <text class="d-sub" x="714" y="440" font-size="10">404 inexistente · 400 contrato mal formado</text>
+
+  <line class="d-edge" x1="620" y1="412" x2="344" y2="412" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="482" y="394" text-anchor="middle" font-size="10">200 · application/json</text>
+  <text class="d-label" x="482" y="406" text-anchor="middle" font-size="10">PagedResult&lt;ProductView&gt;</text>
+
+  <line class="d-edge" x1="340" y1="468" x2="114" y2="468" stroke-width="1.5" marker-end="url(#d04-arrow)"/>
+  <text class="d-label" x="227" y="450" text-anchor="middle" font-size="10">200 · el mapper lo convierte</text>
+  <text class="d-label" x="227" y="462" text-anchor="middle" font-size="10">en el modelo de dominio del portal</text>
+
+  <line class="d-sep" x1="25" y1="502" x2="975" y2="502" stroke-dasharray="2 6"/>
+  <text class="d-accent-text" x="500" y="520" text-anchor="middle" font-size="11" font-weight="600">La segunda puerta: la imagen del producto, que viaja sin token</text>
+
+  <line class="d-accent-line" x1="110" y1="576" x2="336" y2="576" stroke-width="1.5" marker-end="url(#d04-arrow-accent)"/>
+  <text class="d-accent-text" x="223" y="558" text-anchor="middle" font-size="10">GET /media/{clave} — sin cabecera alguna</text>
+  <text class="d-accent-text" x="223" y="570" text-anchor="middle" font-size="10">lo pide la etiqueta &lt;img&gt; de la pantalla</text>
+
+  <line class="d-accent-line" x1="340" y1="624" x2="616" y2="624" stroke-width="1.5" marker-end="url(#d04-arrow-accent)"/>
+  <text class="d-accent-text" x="478" y="606" text-anchor="middle" font-size="10">location ^~ /media/ → UseStaticFiles</text>
+  <text class="d-accent-text" x="478" y="618" text-anchor="middle" font-size="10">sirve el binario del volumen · anónimo, no es un endpoint</text>
+</svg>

@@ -1,0 +1,133 @@
+<svg class="ssf-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" role="img"
+     aria-label="Arranque: la base crea el motor vacío y avisa con pg_isready; solo entonces arranca el servicio, que exige la clave de firma, aplica migraciones, crea el primer administrador y escucha; solo cuando responde arranca el portal."
+     font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif">
+  <title>Qué ocurre, y en qué orden, con un docker compose up</title>
+  <desc>Tres carriles encadenados por healthchecks, no por orden de arranque.</desc>
+  <defs>
+    <marker id="d07-arrow" viewBox="0 0 9 7" refX="8" refY="3.5" markerWidth="8" markerHeight="7" orient="auto-start-reverse">
+      <path class="d-arrow" d="M0,0 L9,3.5 L0,7 z"/>
+    </marker>
+    <style>
+      /* The page owns the theme. Each token reads the page's variable first, so a page
+         served light while the system is dark still draws a light diagram; the literal
+         values only apply when this file is opened outside the page. */
+      .ssf-diagram {
+        font-family: var(--fuente, ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif);
+        --d-surface      : var(--superficie, #f4f6f9);
+        --d-panel        : var(--superficie-alta, #ffffff);
+        --d-sunken       : var(--superficie-hundida, #eef1f5);
+        --d-border       : var(--borde, #dde2e9);
+        --d-border-strong: var(--borde-fuerte, #c3cad4);
+        --d-text         : var(--texto, #1b2430);
+        --d-text-soft    : var(--texto-suave, #5b6672);
+        --d-accent       : var(--acento, #4338ca);
+        --d-accent-strong: var(--acento-fuerte, #3730a3);
+        --d-accent-soft  : var(--acento-tenue, #eef0fc);
+        --d-warn         : var(--aviso, #b45309);
+      }
+      @media (prefers-color-scheme: dark) {
+        .ssf-diagram {
+          --d-surface      : var(--superficie, #11151c);
+          --d-panel        : var(--superficie-alta, #191f28);
+          --d-sunken       : var(--superficie-hundida, #222a35);
+          --d-border       : var(--borde, #2c3542);
+          --d-border-strong: var(--borde-fuerte, #3d4757);
+          --d-text         : var(--texto, #e8ecf1);
+          --d-text-soft    : var(--texto-suave, #9aa5b4);
+          --d-accent       : var(--acento, #7c73ee);
+          --d-accent-strong: var(--acento-fuerte, #8f88f2);
+          --d-accent-soft  : var(--acento-tenue, #232544);
+          --d-warn         : var(--aviso, #f59e0b);
+        }
+      }
+      .ssf-diagram .d-card { fill: var(--d-panel); stroke: var(--d-border); }
+      .ssf-diagram .d-lane { fill: var(--d-surface); stroke: var(--d-border); }
+      .ssf-diagram .d-box { fill: var(--d-sunken); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-focus { fill: var(--d-accent-soft); stroke: var(--d-accent); }
+      .ssf-diagram .d-title { fill: var(--d-text); }
+      .ssf-diagram .d-label { fill: var(--d-text); }
+      .ssf-diagram .d-sub { fill: var(--d-text-soft); }
+      .ssf-diagram .d-edge { stroke: var(--d-text-soft); }
+      .ssf-diagram .d-arrow { fill: var(--d-text-soft); }
+    </style>
+  </defs>
+
+  <rect class="d-card" x="0.5" y="0.5" width="999" height="519" rx="12"/>
+
+  <rect class="d-lane" x="140" y="56" width="840" height="88" rx="10"/>
+  <text class="d-title" x="76" y="96" text-anchor="middle" font-size="12.5" font-weight="600">db</text>
+  <text class="d-sub" x="76" y="113" text-anchor="middle" font-size="10">postgres</text>
+
+  <rect class="d-box" x="160" y="72" width="200" height="56" rx="8"/>
+  <text class="d-title" x="260" y="96" text-anchor="middle" font-size="11.5" font-weight="600">crea base y usuario</text>
+  <text class="d-sub" x="260" y="114" text-anchor="middle" font-size="10">vacíos · ni una línea de DDL</text>
+
+  <rect class="d-focus" x="400" y="72" width="180" height="56" rx="8"/>
+  <text class="d-title" x="490" y="96" text-anchor="middle" font-size="11.5" font-weight="600">healthcheck</text>
+  <text class="d-sub" x="490" y="114" text-anchor="middle" font-size="10">pg_isready</text>
+  <line class="d-edge" x1="364" y1="100" x2="396" y2="100" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+
+  <polyline class="d-edge" points="490,132 490,166 230,166 230,196" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d07-arrow)"/>
+  <text class="d-label" x="360" y="160" text-anchor="middle" font-size="10">depends_on: condition service_healthy</text>
+
+  <rect class="d-lane" x="140" y="184" width="840" height="110" rx="10"/>
+  <text class="d-title" x="76" y="234" text-anchor="middle" font-size="12.5" font-weight="600">service</text>
+  <text class="d-sub" x="76" y="251" text-anchor="middle" font-size="10">.NET 8</text>
+
+  <rect class="d-box" x="160" y="200" width="140" height="78" rx="8"/>
+  <text class="d-title" x="230" y="224" text-anchor="middle" font-size="11" font-weight="600">Jwt__SigningKey</text>
+  <text class="d-sub" x="230" y="242" text-anchor="middle" font-size="10">si falta o es corta,</text>
+  <text class="d-sub" x="230" y="256" text-anchor="middle" font-size="10">se niega a arrancar</text>
+  <text class="d-sub" x="230" y="270" text-anchor="middle" font-size="10">y dice por qué</text>
+
+  <rect class="d-box" x="326" y="200" width="140" height="78" rx="8"/>
+  <text class="d-title" x="396" y="224" text-anchor="middle" font-size="11" font-weight="600">MigrateAsync()</text>
+  <text class="d-sub" x="396" y="242" text-anchor="middle" font-size="10">crea el esquema</text>
+  <text class="d-sub" x="396" y="256" text-anchor="middle" font-size="10">y las categorías</text>
+  <text class="d-sub" x="396" y="270" text-anchor="middle" font-size="10">de referencia</text>
+
+  <rect class="d-box" x="492" y="200" width="140" height="78" rx="8"/>
+  <text class="d-title" x="562" y="224" text-anchor="middle" font-size="11" font-weight="600">primer admin</text>
+  <text class="d-sub" x="562" y="242" text-anchor="middle" font-size="10">del entorno, si no</text>
+  <text class="d-sub" x="562" y="256" text-anchor="middle" font-size="10">existe ya · sin él</text>
+  <text class="d-sub" x="562" y="270" text-anchor="middle" font-size="10">no se entra</text>
+
+  <rect class="d-box" x="658" y="200" width="140" height="78" rx="8"/>
+  <text class="d-title" x="728" y="232" text-anchor="middle" font-size="11" font-weight="600">escucha :8080</text>
+  <text class="d-sub" x="728" y="250" text-anchor="middle" font-size="10">y con Swagger</text>
+  <text class="d-sub" x="728" y="264" text-anchor="middle" font-size="10">montado</text>
+
+  <rect class="d-focus" x="824" y="200" width="140" height="78" rx="8"/>
+  <text class="d-title" x="894" y="232" text-anchor="middle" font-size="11" font-weight="600">healthcheck</text>
+  <text class="d-sub" x="894" y="250" text-anchor="middle" font-size="10">el puerto 8080</text>
+  <text class="d-sub" x="894" y="264" text-anchor="middle" font-size="10">acepta conexión</text>
+
+  <line class="d-edge" x1="304" y1="239" x2="322" y2="239" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+  <line class="d-edge" x1="470" y1="239" x2="488" y2="239" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+  <line class="d-edge" x1="636" y1="239" x2="654" y2="239" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+  <line class="d-edge" x1="802" y1="239" x2="820" y2="239" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+
+  <polyline class="d-edge" points="894,282 894,316 260,316 260,346" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d07-arrow)"/>
+  <text class="d-label" x="577" y="310" text-anchor="middle" font-size="10">depends_on: condition service_healthy</text>
+
+  <rect class="d-lane" x="140" y="334" width="840" height="88" rx="10"/>
+  <text class="d-title" x="76" y="374" text-anchor="middle" font-size="12.5" font-weight="600">portal</text>
+  <text class="d-sub" x="76" y="391" text-anchor="middle" font-size="10">nginx</text>
+
+  <rect class="d-box" x="160" y="350" width="200" height="56" rx="8"/>
+  <text class="d-title" x="260" y="374" text-anchor="middle" font-size="11.5" font-weight="600">sirve el build</text>
+  <text class="d-sub" x="260" y="392" text-anchor="middle" font-size="10">y hace de proxy a service:8080</text>
+
+  <rect class="d-focus" x="400" y="350" width="180" height="56" rx="8"/>
+  <text class="d-title" x="490" y="374" text-anchor="middle" font-size="11.5" font-weight="600">healthcheck</text>
+  <text class="d-sub" x="490" y="392" text-anchor="middle" font-size="10">wget a 127.0.0.1</text>
+  <line class="d-edge" x1="364" y1="378" x2="396" y2="378" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+
+  <rect class="d-box" x="620" y="350" width="344" height="56" rx="8"/>
+  <text class="d-title" x="792" y="374" text-anchor="middle" font-size="11.5" font-weight="600">el sistema está en http://localhost:8080</text>
+  <text class="d-sub" x="792" y="392" text-anchor="middle" font-size="10">y la API se documenta a sí misma en /swagger</text>
+  <line class="d-edge" x1="584" y1="378" x2="616" y2="378" stroke-width="1.5" marker-end="url(#d07-arrow)"/>
+
+  <text class="d-sub" x="500" y="456" text-anchor="middle" font-size="10.5">Cada carril espera al healthcheck del anterior, no a que su contenedor exista: por eso no hay un primer arranque que falla y un segundo que funciona.</text>
+  <text class="d-sub" x="500" y="478" text-anchor="middle" font-size="10.5">El motor llega vacío y es el servicio quien crea el esquema al arrancar: por eso el orden importa.</text>
+</svg>

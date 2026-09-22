@@ -1,0 +1,121 @@
+<svg class="ssf-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" role="img"
+     aria-label="Grafo de referencias entre proyectos: bootstrap referencia a los cuatro adaptadores, cada adaptador referencia solo a application, application referencia solo a domain, y de domain no sale ninguna flecha."
+     font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif">
+  <title>La regla de dependencia, tal como la declaran los .csproj</title>
+  <desc>Las flechas son ProjectReference reales de la solución SimpleStockFlow.</desc>
+  <defs>
+    <marker id="d06-arrow" viewBox="0 0 9 7" refX="8" refY="3.5" markerWidth="8" markerHeight="7" orient="auto-start-reverse">
+      <path class="d-arrow" d="M0,0 L9,3.5 L0,7 z"/>
+    </marker>
+    <style>
+      /* The page owns the theme. Each token reads the page's variable first, so a page
+         served light while the system is dark still draws a light diagram; the literal
+         values only apply when this file is opened outside the page. */
+      .ssf-diagram {
+        font-family: var(--fuente, ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif);
+        --d-surface      : var(--superficie, #f4f6f9);
+        --d-panel        : var(--superficie-alta, #ffffff);
+        --d-sunken       : var(--superficie-hundida, #eef1f5);
+        --d-border       : var(--borde, #dde2e9);
+        --d-border-strong: var(--borde-fuerte, #c3cad4);
+        --d-text         : var(--texto, #1b2430);
+        --d-text-soft    : var(--texto-suave, #5b6672);
+        --d-accent       : var(--acento, #4338ca);
+        --d-accent-strong: var(--acento-fuerte, #3730a3);
+        --d-accent-soft  : var(--acento-tenue, #eef0fc);
+        --d-warn         : var(--aviso, #b45309);
+      }
+      @media (prefers-color-scheme: dark) {
+        .ssf-diagram {
+          --d-surface      : var(--superficie, #11151c);
+          --d-panel        : var(--superficie-alta, #191f28);
+          --d-sunken       : var(--superficie-hundida, #222a35);
+          --d-border       : var(--borde, #2c3542);
+          --d-border-strong: var(--borde-fuerte, #3d4757);
+          --d-text         : var(--texto, #e8ecf1);
+          --d-text-soft    : var(--texto-suave, #9aa5b4);
+          --d-accent       : var(--acento, #7c73ee);
+          --d-accent-strong: var(--acento-fuerte, #8f88f2);
+          --d-accent-soft  : var(--acento-tenue, #232544);
+          --d-warn         : var(--aviso, #f59e0b);
+        }
+      }
+      .ssf-diagram .d-card { fill: var(--d-panel); stroke: var(--d-border); }
+      .ssf-diagram .d-box { fill: var(--d-sunken); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-test { fill: var(--d-surface); stroke: var(--d-border-strong); }
+      .ssf-diagram .d-focus { fill: var(--d-accent-soft); stroke: var(--d-accent); }
+      .ssf-diagram .d-title { fill: var(--d-text); }
+      .ssf-diagram .d-label { fill: var(--d-text); }
+      .ssf-diagram .d-sub { fill: var(--d-text-soft); }
+      .ssf-diagram .d-edge { stroke: var(--d-text-soft); }
+      .ssf-diagram .d-arrow { fill: var(--d-text-soft); }
+    </style>
+  </defs>
+
+  <rect class="d-card" x="0.5" y="0.5" width="999" height="469" rx="12"/>
+
+  <rect class="d-box" x="30" y="150" width="160" height="76" rx="8"/>
+  <text class="d-title" x="110" y="180" text-anchor="middle" font-size="12.5" font-weight="600">Bootstrap</text>
+  <text class="d-sub" x="110" y="199" text-anchor="middle" font-size="10">compone el hexágono</text>
+  <text class="d-sub" x="110" y="214" text-anchor="middle" font-size="10">y arranca el proceso</text>
+
+  <rect class="d-box" x="256" y="40" width="176" height="56" rx="8"/>
+  <text class="d-title" x="344" y="64" text-anchor="middle" font-size="11.5" font-weight="600">Adapters.Rest</text>
+  <text class="d-sub" x="344" y="82" text-anchor="middle" font-size="10">el único adaptador entrante</text>
+
+  <rect class="d-box" x="256" y="110" width="176" height="56" rx="8"/>
+  <text class="d-title" x="344" y="134" text-anchor="middle" font-size="11.5" font-weight="600">Adapters.Persistence</text>
+  <text class="d-sub" x="344" y="152" text-anchor="middle" font-size="10">EF Core · Npgsql · migraciones</text>
+
+  <rect class="d-box" x="256" y="180" width="176" height="56" rx="8"/>
+  <text class="d-title" x="344" y="204" text-anchor="middle" font-size="11.5" font-weight="600">Adapters.Security</text>
+  <text class="d-sub" x="344" y="222" text-anchor="middle" font-size="10">JWT · PBKDF2</text>
+
+  <rect class="d-box" x="256" y="250" width="176" height="56" rx="8"/>
+  <text class="d-title" x="344" y="274" text-anchor="middle" font-size="11.5" font-weight="600">Adapters.Storage</text>
+  <text class="d-sub" x="344" y="292" text-anchor="middle" font-size="10">binarios en disco</text>
+
+  <rect class="d-box" x="510" y="150" width="170" height="76" rx="8"/>
+  <text class="d-title" x="595" y="180" text-anchor="middle" font-size="12.5" font-weight="600">Application</text>
+  <text class="d-sub" x="595" y="199" text-anchor="middle" font-size="10">puertos</text>
+  <text class="d-sub" x="595" y="214" text-anchor="middle" font-size="10">y casos de uso</text>
+
+  <rect class="d-focus" x="770" y="150" width="170" height="76" rx="8"/>
+  <text class="d-title" x="855" y="180" text-anchor="middle" font-size="12.5" font-weight="600">Domain</text>
+  <text class="d-sub" x="855" y="199" text-anchor="middle" font-size="10">reglas</text>
+  <text class="d-sub" x="855" y="214" text-anchor="middle" font-size="10">e invariantes</text>
+  <text class="d-sub" x="855" y="140" text-anchor="middle" font-size="10.5" font-weight="600">de aquí no sale ninguna flecha</text>
+
+  <line class="d-edge" x1="190" y1="182" x2="252" y2="72" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="190" y1="184" x2="252" y2="140" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="190" y1="192" x2="252" y2="206" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="190" y1="196" x2="252" y2="276" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+
+  <line class="d-edge" x1="436" y1="72" x2="506" y2="176" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="436" y1="140" x2="506" y2="180" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="436" y1="206" x2="506" y2="196" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <line class="d-edge" x1="436" y1="276" x2="506" y2="200" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+
+  <line class="d-edge" x1="680" y1="188" x2="766" y2="188" stroke-width="1.5" marker-end="url(#d06-arrow)"/>
+  <text class="d-label" x="723" y="180" text-anchor="middle" font-size="10">referencia</text>
+
+  <rect class="d-test" x="30" y="352" width="200" height="66" rx="8"/>
+  <text class="d-title" x="130" y="376" text-anchor="middle" font-size="11.5" font-weight="600">Adapters.IntegrationTests</text>
+  <text class="d-sub" x="130" y="394" text-anchor="middle" font-size="10">el host entero contra un</text>
+  <text class="d-sub" x="130" y="409" text-anchor="middle" font-size="10">Postgres real (Testcontainers)</text>
+  <line class="d-edge" x1="110" y1="348" x2="110" y2="230" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#d06-arrow)"/>
+
+  <rect class="d-test" x="510" y="352" width="170" height="66" rx="8"/>
+  <text class="d-title" x="595" y="376" text-anchor="middle" font-size="11.5" font-weight="600">Application.UnitTests</text>
+  <text class="d-sub" x="595" y="394" text-anchor="middle" font-size="10">con dobles</text>
+  <text class="d-sub" x="595" y="409" text-anchor="middle" font-size="10">de los puertos salientes</text>
+  <line class="d-edge" x1="595" y1="348" x2="595" y2="230" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#d06-arrow)"/>
+
+  <rect class="d-test" x="770" y="352" width="170" height="66" rx="8"/>
+  <text class="d-title" x="855" y="376" text-anchor="middle" font-size="11.5" font-weight="600">Domain.UnitTests</text>
+  <text class="d-sub" x="855" y="394" text-anchor="middle" font-size="10">sin un solo doble:</text>
+  <text class="d-sub" x="855" y="409" text-anchor="middle" font-size="10">no hay nada que fingir</text>
+  <line class="d-edge" x1="855" y1="348" x2="855" y2="230" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#d06-arrow)"/>
+
+  <text class="d-sub" x="500" y="446" text-anchor="middle" font-size="10.5">Cada flecha es un ProjectReference que se puede leer en el .csproj. Los proyectos se llaman SimpleStockFlow.*; aquí va el sufijo.</text>
+</svg>

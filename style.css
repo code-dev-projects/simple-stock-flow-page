@@ -1,0 +1,744 @@
+/* The same tokens as the portal, so the page and the product look like one thing.
+   No external dependencies on purpose: GitHub Pages serves this as-is, off any third-party network. */
+
+:root {
+  color-scheme: light;
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, monospace;
+
+  /* Ratio 1.25 scale anchored at 16px. The page uses six of the eight steps and skips
+     --t-xl and --t-3xl on purpose: skipping a step separates two levels further than 1.25
+     allows, and below 1.06 between two sizes the eye no longer tells which one leads. */
+  --t-xs: 0.75rem;
+  --t-s: 0.875rem;
+  --t-m: 1rem;
+  --t-l: 1.25rem;
+  --t-xl: 1.5625rem;
+  --t-2xl: 1.9375rem;
+  --t-3xl: 2.4375rem;
+  --t-4xl: 3.0625rem;
+
+  /* Spacing grid on a base of 4. Every gap on the page is one of these six. */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 16px;
+  --e4: 24px;
+  --e5: 48px;
+  --e6: 96px;
+
+  --surface: #f4f6f9;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eef1f5;
+  --hero-bg: #dadcea;
+  --topbar-bg: rgb(255 255 255 / 82%);
+  --border: #d3d9e2;
+  --border-strong: #848d9a;
+  --text: #1b2430;
+  --text-soft: #5b6672;
+  --accent: #4338ca;
+  --accent-strong: #3730a3;
+  --accent-bright: #4338ca;
+  --accent-soft: #eef0fc;
+  --warn: #b45309;
+  --ring: 0 0 0 3px rgb(67 56 202 / 45%);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-high: 0 12px 32px rgb(27 36 48 / 14%);
+  --width: 68rem;
+  --width-wide: 74rem;
+  --topbar-h: 56px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --surface: #11151c;
+    --surface-raised: #191f28;
+    --surface-sunken: #222a35;
+    --hero-bg: #333449;
+    --topbar-bg: rgb(25 31 40 / 82%);
+    --border: #37404e;
+    --border-strong: #677484;
+    --text: #e8ecf1;
+    --text-soft: #9aa5b4;
+    --accent: #5b4fd4;
+    --accent-strong: #6d61e0;
+    --accent-bright: #8d85f0;
+    --accent-soft: #232544;
+    --warn: #fbbf24;
+    --ring: 0 0 0 3px rgb(141 133 240 / 50%);
+    --shadow-high: 0 16px 40px rgb(0 0 0 / 55%);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --surface: #11151c;
+  --surface-raised: #191f28;
+  --surface-sunken: #222a35;
+  --hero-bg: #333449;
+  --topbar-bg: rgb(25 31 40 / 82%);
+  --border: #37404e;
+  --border-strong: #677484;
+  --text: #e8ecf1;
+  --text-soft: #9aa5b4;
+  --accent: #5b4fd4;
+  --accent-strong: #6d61e0;
+  --accent-bright: #8d85f0;
+  --accent-soft: #232544;
+  --warn: #fbbf24;
+  --ring: 0 0 0 3px rgb(141 133 240 / 50%);
+  --shadow-high: 0 16px 40px rgb(0 0 0 / 55%);
+}
+
+:root[data-theme='light'] { color-scheme: light; }
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--t-m);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: 0 var(--e3);
+}
+
+.container--wide { max-width: var(--width-wide); }
+
+/* The ring lives in box-shadow rather than outline because box-shadow respects border-radius;
+   the transparent outline keeps focus visible under forced-colors. */
+:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--ring);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--e3);
+  top: -100%;
+  z-index: 30;
+  padding: var(--e2) var(--e3);
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: var(--t-s);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus { top: var(--e2); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+}
+
+@supports (backdrop-filter: blur(8px)) {
+  .topbar {
+    background: var(--topbar-bg);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.topbar__row {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+  height: var(--topbar-h);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  font-size: var(--t-s);
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.brand__mark {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: var(--e4);
+}
+
+.nav a {
+  color: var(--text-soft);
+  font-size: var(--t-s);
+  font-weight: 600;
+  line-height: 1.55;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.nav a:hover { color: var(--text); }
+
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.theme-toggle:hover { border-color: var(--accent-bright); color: var(--accent-bright); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle svg[hidden] { display: none; }
+
+.hero {
+  padding: var(--e5) 0 var(--e6);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(170deg, var(--hero-bg), var(--surface-raised) 72%);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  gap: var(--e5);
+  align-items: center;
+}
+
+.hero__text { max-width: 28rem; }
+
+.hero h1 {
+  margin: 0 0 var(--e4);
+  font-size: clamp(var(--t-2xl), 5vw, var(--t-4xl));
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.lede {
+  margin: 0 0 var(--e4);
+  font-size: var(--t-l);
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2);
+}
+
+.note {
+  margin: var(--e4) 0 0;
+  font-size: var(--t-s);
+  line-height: 1.55;
+  color: var(--text-soft);
+}
+
+.note a { color: var(--accent-bright); border-radius: var(--radius-sm); }
+.weight { color: var(--text-soft); white-space: nowrap; }
+
+.index { display: none; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  padding: var(--e2) var(--e4);
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: var(--t-m);
+  line-height: 1.45;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.button--primary { background: var(--accent); color: #fff; }
+.button--primary:hover { background: var(--accent-strong); }
+.button--soft {
+  background: var(--surface-raised);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.button--soft:hover { border-color: var(--accent-bright); color: var(--accent-bright); }
+.button:active { transform: translateY(1px); }
+
+section { padding: var(--e6) 0; }
+section + section { border-top: 1px solid var(--border); }
+main > section[id] { scroll-margin-top: calc(var(--topbar-h) + var(--e3)); }
+
+h2 {
+  margin: 0 0 var(--e2);
+  font-size: var(--t-2xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.sub {
+  margin: 0 0 var(--e5);
+  max-width: 60ch;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.section-subhead {
+  margin: var(--e5) 0 var(--e3);
+  font-size: var(--t-l);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.grid-features {
+  display: grid;
+  gap: var(--e4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--e4);
+}
+
+.card--wide {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+  gap: var(--e4);
+  align-items: start;
+}
+
+.card h3 {
+  margin: 0 0 var(--e2);
+  font-size: var(--t-l);
+  line-height: 1.3;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.card--wide h3 { margin: 0; }
+
+.card p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  stroke: var(--accent-bright);
+}
+
+.icon--large { width: 1.5rem; height: 1.5rem; }
+
+.figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.figure:hover { border-color: var(--border-strong); }
+
+/* The frame keeps the screenshot off the theme: without it a near-white capture dissolves into
+   the light card and turns into a slab against the dark one. Side-by-side figures are stretched
+   to the tallest of the row, and the slack is given to the frame so it mats the screenshot
+   against the sunken background instead of landing between image and caption as bare card. */
+.figure__frame {
+  padding: var(--e2);
+  background: var(--surface-sunken);
+  flex: 1;
+  display: grid;
+  align-content: center;
+}
+
+.figure__frame img,
+.figure__frame picture {
+  display: block;
+  width: 100%;
+}
+
+.figure__frame img {
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface-raised);
+}
+
+/* The sign-in screen is a small card on a wide empty canvas: shown whole at column width the card
+   would be unreadable, so this trims the empty margins instead of shrinking the card. */
+.shot--trim {
+  height: auto;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+
+.figure figcaption {
+  margin-top: auto;
+  padding: var(--e3) var(--e4);
+  font-size: var(--t-s);
+  line-height: 1.5;
+  color: var(--text-soft);
+  border-top: 1px solid var(--border);
+}
+
+/* The high shadow stays reserved for the hero's proof shot. The page has seventeen bordered
+   containers; a shadow on all of them ranks none of them. */
+.figure--featured {
+  box-shadow: var(--shadow-high);
+  justify-self: center;
+  max-width: 34rem;
+  width: 100%;
+}
+
+.figure__link {
+  display: inline-block;
+  margin-left: var(--e1);
+  color: var(--accent-bright);
+  border-radius: var(--radius-sm);
+}
+
+.grid-shots {
+  display: grid;
+  gap: var(--e4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.figure--lead { grid-column: 1 / -1; }
+
+.figure--canvas { margin-bottom: var(--e4); }
+
+.canvas {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: var(--surface-raised);
+  border-radius: 6px;
+}
+
+/* The ratio is declared here to reserve the slot before the SVG downloads: an <object> does not
+   inherit the viewBox aspect ratio the way an <img> does. */
+.canvas--path { aspect-ratio: 1000 / 660; }
+.canvas--hexagon { aspect-ratio: 1000 / 530; }
+.canvas--dependency { aspect-ratio: 1000 / 470; }
+.canvas--startup { aspect-ratio: 1000 / 520; }
+
+.grid-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--e4);
+  margin: 0;
+  padding: var(--e4) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.grid-stack li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.grid-stack li + li {
+  padding-left: var(--e4);
+  border-left: 1px solid var(--border);
+}
+
+.grid-stack__name { font-size: var(--t-m); font-weight: 600; line-height: 1.45; }
+.grid-stack__role { font-size: var(--t-s); line-height: 1.5; color: var(--text-soft); }
+
+.grid-startup {
+  display: grid;
+  grid-template-columns: minmax(0, 44rem) minmax(0, 1fr);
+  gap: var(--e4);
+  align-items: start;
+  margin-bottom: var(--e5);
+}
+
+.terminal {
+  margin: 0;
+  padding: var(--e4);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: var(--t-s);
+  line-height: 1.55;
+  color: var(--text);
+  white-space: normal;
+}
+
+.terminal code {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  font-size: inherit;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.terminal__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--e2);
+}
+
+.terminal__prompt { color: var(--accent-bright); user-select: none; }
+.terminal__comment { margin-left: auto; color: var(--text-soft); }
+
+.card-facts {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--e4);
+}
+
+.card-facts h3 {
+  margin: 0 0 var(--e3);
+  font-size: var(--t-l);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.card-facts__list { margin: 0; display: grid; gap: var(--e3); }
+.card-facts__pair { display: grid; gap: var(--e1); }
+
+.card-facts__pair dt {
+  font-size: var(--t-s);
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.card-facts__pair dd { margin: 0; }
+.card-facts__pair dd code { font-size: var(--t-s); }
+
+.card-facts__foot {
+  margin: var(--e4) 0 0;
+  padding-top: var(--e3);
+  border-top: 1px solid var(--border);
+  font-size: var(--t-s);
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.grid-docs {
+  display: grid;
+  gap: var(--e4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.doc {
+  display: flex;
+  gap: var(--e3);
+  align-items: flex-start;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: var(--e4);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.doc:hover { border-color: var(--accent-bright); background: var(--surface-sunken); }
+.doc:active { transform: translateY(1px); }
+
+.doc__body { min-width: 0; display: block; }
+
+.doc__title {
+  display: block;
+  margin-bottom: var(--e1);
+  font-size: var(--t-l);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.doc__text {
+  display: block;
+  margin-bottom: var(--e2);
+  max-width: 34ch;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.badge {
+  display: inline-block;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  padding: 0 var(--e2);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-bright);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: var(--e5) 0;
+  color: var(--text-soft);
+  font-size: var(--t-s);
+  line-height: 1.5;
+}
+
+footer p { margin: 0; }
+footer strong { color: var(--text); }
+
+@media (max-width: 64rem) {
+  .grid-startup { grid-template-columns: minmax(0, 1fr); }
+  .grid-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 56rem) {
+  .hero__grid { grid-template-columns: minmax(0, 1fr); gap: var(--e5); }
+  .hero__text { max-width: 34rem; }
+  .grid-shots { grid-template-columns: minmax(0, 1fr); }
+  .card--wide { grid-template-columns: minmax(0, 1fr); gap: var(--e2); }
+}
+
+@media (max-width: 48rem) {
+  .nav { display: none; }
+
+  .index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e2) var(--e4);
+    margin-top: var(--e4);
+    padding-top: var(--e4);
+    border-top: 1px solid var(--border);
+  }
+
+  .index a {
+    color: var(--accent-bright);
+    font-size: var(--t-s);
+    font-weight: 600;
+    line-height: 1.55;
+    border-radius: var(--radius-sm);
+  }
+
+  .brand { margin-right: auto; }
+}
+
+@media (max-width: 40rem) {
+  section { padding: var(--e5) 0; }
+  .hero { padding: var(--e4) 0 var(--e5); }
+
+  /* On the phone the proof shot outweighs the paragraph: the text drops one step of the scale so
+     the screenshot fits in the first screenful. */
+  .hero h1 { margin-bottom: var(--e3); }
+  .lede { font-size: var(--t-m); margin-bottom: var(--e3); }
+  .hero__grid { gap: var(--e4); }
+
+  .grid-features { grid-template-columns: minmax(0, 1fr); }
+  .grid-docs { grid-template-columns: minmax(0, 1fr); }
+  .brand__name { display: none; }
+
+  /* Single column, so the left rule and its indent would hang off nothing. */
+  .grid-stack { gap: var(--e3); }
+  .grid-stack li + li { padding-left: 0; border-left: 0; }
+
+  /* No horizontal scrolling: the comment drops to its own line instead of leaving the box. */
+  .terminal__comment {
+    flex-basis: 100%;
+    margin-left: 0;
+    padding-left: 2ch;
+  }
+
+  .figure figcaption { padding: var(--e3); }
+  .terminal { padding: var(--e3); }
+  .card, .doc, .card-facts { padding: var(--e3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+  .button:active, .doc:active { transform: none; }
+}
+
+@media print {
+  /* Browsers drop backgrounds when printing but keep text colour: without forcing the light
+     tokens, the dark theme comes out almost white on paper. */
+  :root, :root[data-theme='dark'], :root[data-theme='light'] {
+    color-scheme: light;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --surface-sunken: #ffffff;
+    --hero-bg: #ffffff;
+    --border: #9aa3b0;
+    --border-strong: #6b7583;
+    --text: #000000;
+    --text-soft: #333333;
+    --accent: #2a2380;
+    --accent-strong: #2a2380;
+    --accent-bright: #2a2380;
+    --accent-soft: #ffffff;
+    --warn: #7a3b06;
+    --shadow-high: none;
+  }
+
+  .topbar, .theme-toggle, .skip-link, .index, .figure__link { display: none; }
+
+  body { background: #fff; }
+  section { padding: var(--e4) 0; break-inside: avoid; }
+  .figure, .card, .doc, .card-facts { break-inside: avoid; box-shadow: none; }
+  .terminal { overflow: visible; white-space: pre-wrap; }
+  .terminal__comment { margin-left: var(--e3); }
+
+  a[href^="documentos"]::after { content: ' (' attr(href) ')'; font-size: var(--t-xs); }
+}
